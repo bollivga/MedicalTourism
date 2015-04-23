@@ -1,0 +1,4 @@
+Week 7:
+Set up constraints for database, foreign keys, etc.,
+Fill database with information (Search online first, make up if it can't be found), 
+set up barebones HTML site with top 10 functionality (C# in the middle)
