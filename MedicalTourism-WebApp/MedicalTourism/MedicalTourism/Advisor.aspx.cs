@@ -15,60 +15,70 @@ namespace MedicalTourism
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!this.IsPostBack)
+            
+            aspsubmit.Click += new EventHandler(aspsubmit_Click);
+
+        }
+
+        protected void aspsubmit_Click(object sender, EventArgs e)
+        {
+                
+            string category_val = String.Format("{0}", category.Value);
+            string country_val = String.Format("{0}", country.Value);
+            string rating_val = String.Format("{0}", rating.Value);
+
+
+            //Populating a DataTable from database.
+            DataTable dt = this.GetData(category_val, country_val, rating_val);
+
+            //Building an HTML string.
+            StringBuilder html = new StringBuilder();
+
+            //Table start.
+            html.Append("<table border = '1'>");
+
+            //Building the Header row.
+            html.Append("<tr>");
+            foreach (DataColumn column in dt.Columns)
             {
-                //Populating a DataTable from database.
-                DataTable dt = this.GetData();
+                html.Append("<th>");
+                html.Append(column.ColumnName);
+                html.Append("</th>");
+            }
+            html.Append("</tr>");
 
-                //Building an HTML string.
-                StringBuilder html = new StringBuilder();
-
-                //Table start.
-                html.Append("<table border = '1'>");
-
-                //Building the Header row.
+            //Building the Data rows.
+            foreach (DataRow row in dt.Rows)
+            {
                 html.Append("<tr>");
                 foreach (DataColumn column in dt.Columns)
                 {
-                    html.Append("<th>");
-                    html.Append(column.ColumnName);
-                    html.Append("</th>");
+                    html.Append("<td>");
+                    html.Append(row[column.ColumnName]);
+                    html.Append("</td>");
                 }
                 html.Append("</tr>");
-
-                //Building the Data rows.
-                foreach (DataRow row in dt.Rows)
-                {
-                    html.Append("<tr>");
-                    foreach (DataColumn column in dt.Columns)
-                    {
-                        html.Append("<td>");
-                        html.Append(row[column.ColumnName]);
-                        html.Append("</td>");
-                    }
-                    html.Append("</tr>");
-                }
-
-                //Table end.
-                html.Append("</table>");
-
-                //Append the HTML string to Placeholder.
-                PlaceHolder1.Controls.Add(new Literal { Text = html.ToString() });
             }
+
+            //Table end.
+            html.Append("</table>");
+
+            //Append the HTML string to Placeholder.
+            PlaceHolder1.Controls.Add(new Literal { Text = html.ToString() });
+
         }
     
-        private DataTable GetData() 
+        private DataTable GetData(string category, string country, string rating) 
         {   
-            string category = Request.Form["category"];
-            string country = Request.Form["country"];
-            string rating = Request.Form["rating"];
+            
 
             //string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
             using (SqlConnection con = new SqlConnection("user id=loganga;password=;server=titan.csse.rose-hulman.edu;database=MedicalTourism;connection timeout=30"))
             {
                 
-                using (SqlCommand cmd = new SqlCommand("DisplayCityResults", con) { CommandType = CommandType.StoredProcedure })
+                using (SqlCommand cmd = new SqlCommand("DisplayCityResults", con))
                 {
+                    cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@Country", country);
                     cmd.Parameters.AddWithValue("@SurgeryType", category);
                     cmd.Parameters.AddWithValue("@Rating", rating);

@@ -10,18 +10,18 @@
 
     <h1>Medical Tourism Advisor</h1>
     <p><b>Please fill out this form regarding your desired medical procedure</b></p>
-    <form runat="server">
+    <form method="POST" action="Advisor.aspx" runat="server">
     <p>Surgery Category:</p>
-    <select id="category" runat="server">
-        <option value="Cosmetic">Cosmetic</option>
+    <select name="category" runat="server">
         <option value="Neurosrgy">Neurosurgery</option>
+        <option value="Cosmetic">Cosmetic</option>
         <option value="Organ trns">Organ Transplant</option>
         <option value="Orthopedic">Orthopedic</option>
         <option value="Thoracic">Thoracic</option>
         <option value="Endocrine">Endocrine</option>
     </select>
     <p>Country Preferred:</p>
-    <select id="country" runat="server">
+    <select name="country" runat="server">
         <option value="--">--</option>
         <option value="Austria">Austria</option>
         <option value="Brazil">Brazil</option>
@@ -44,7 +44,7 @@
         <option value="Ukraine">Ukraine</option>
     </select>
     <p>Minimum Rating (Out of 5):</p>
-    <select id="rating" runat="server">
+    <select name="rating" runat="server">
         <option value="0">0</option>
         <option value="1">1</option>
         <option value="2">2</option>
@@ -53,8 +53,9 @@
         <option value="5">5</option>
     </select>
     <p></p>
-    <asp:Button runat="server" Text="Submit" ID="aspsubmit" OnClick="aspsubmit_Click"/>
-    <p><asp:PlaceHolder ID = "PlaceHolder1" runat="server"/></p>
+    <input runat="server" type="button" value="Submit" class='button' id="btnSubmit"/>
+    <input runat="server" type="submit" value="Submit" id="submit" />
+    <p><asp:PlaceHolder ID = "PlaceHolder1" runat="server" /></p>
     </form>
 </body>
 </html>
