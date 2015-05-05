@@ -73,7 +73,7 @@ namespace MedicalTourism
             
 
             //string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
-            using (SqlConnection con = new SqlConnection("user id=loganga;password=;server=titan.csse.rose-hulman.edu;database=MedicalTourism;connection timeout=30"))
+            using (SqlConnection con = new SqlConnection("user id=loganga;password=Nogameslol2;server=titan.csse.rose-hulman.edu;database=MedicalTourism;connection timeout=30"))
             {
                 
                 using (SqlCommand cmd = new SqlCommand("DisplayCityResults", con))
