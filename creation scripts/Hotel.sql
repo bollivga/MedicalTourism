@@ -1,0 +1,30 @@
+USE [MedicalTourism]
+GO
+
+/****** Object:  Table [dbo].[Hotel]    Script Date: 5/6/2015 7:05:39 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[Hotel](
+	[HOT_ID] [smallint] NOT NULL,
+	[Name] [nchar](20) NULL,
+	[CPN] [money] NULL,
+	[CIT_ID] [smallint] NOT NULL,
+ CONSTRAINT [PK_Hotel] PRIMARY KEY CLUSTERED 
+(
+	[HOT_ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+ALTER TABLE [dbo].[Hotel]  WITH CHECK ADD  CONSTRAINT [FK_Hotel_City] FOREIGN KEY([CIT_ID])
+REFERENCES [dbo].[City] ([CIT_ID])
+GO
+
+ALTER TABLE [dbo].[Hotel] CHECK CONSTRAINT [FK_Hotel_City]
+GO
+

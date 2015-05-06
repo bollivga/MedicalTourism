@@ -1,0 +1,21 @@
+USE [MedicalTourism]
+GO
+
+/****** Object:  Table [dbo].[Airline]    Script Date: 5/6/2015 7:04:54 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[Airline](
+	[A_ID] [smallint] NOT NULL,
+	[Name] [nchar](10) NOT NULL,
+ CONSTRAINT [PK_Airline] PRIMARY KEY CLUSTERED 
+(
+	[A_ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
