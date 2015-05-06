@@ -16,7 +16,7 @@ namespace MedicalTourism
         protected void Page_Load(object sender, EventArgs e)
         {
             
-            aspsubmit.Click += new EventHandler(aspsubmit_Click);
+            //aspsubmit.Click += new EventHandler(aspsubmit_Click);
 
         }
 
@@ -73,7 +73,7 @@ namespace MedicalTourism
             
 
             //string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
-            using (SqlConnection con = new SqlConnection("user id=loganga;password=Nogameslol2;server=titan.csse.rose-hulman.edu;database=MedicalTourism;connection timeout=30"))
+            using (SqlConnection con = new SqlConnection("user id=333Spring2015Medical;password=v4rewrapHEgequbr;server=titan.csse.rose-hulman.edu;database=MedicalTourism;connection timeout=30"))
             {
                 
                 using (SqlCommand cmd = new SqlCommand("DisplayCityResults", con))
