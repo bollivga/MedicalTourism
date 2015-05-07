@@ -1,0 +1,32 @@
+USE [MedicalTourism]
+GO
+
+/****** Object:  Table [dbo].[City]    Script Date: 5/6/2015 7:05:02 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[City](
+	[CIT_ID] [smallint] NOT NULL,
+	[Name] [nchar](10) NULL,
+	[Rating] [tinyint] NULL,
+	[CO_NAME] [nchar](20) NOT NULL,
+ CONSTRAINT [PK_City] PRIMARY KEY CLUSTERED 
+(
+	[CIT_ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+ALTER TABLE [dbo].[City]  WITH CHECK ADD  CONSTRAINT [FK_City_Country] FOREIGN KEY([CO_NAME])
+REFERENCES [dbo].[Country] ([CO_NAME])
+ON UPDATE CASCADE
+ON DELETE CASCADE
+GO
+
+ALTER TABLE [dbo].[City] CHECK CONSTRAINT [FK_City_Country]
+GO
+
