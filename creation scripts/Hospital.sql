@@ -1,7 +1,7 @@
 USE [MedicalTourism]
 GO
 
-/****** Object:  Table [dbo].[Hospital]    Script Date: 5/6/2015 7:05:24 PM ******/
+/****** Object:  Table [dbo].[Hospital]    Script Date: 5/7/2015 1:50:18 PM ******/
 SET ANSI_NULLS ON
 GO
 
@@ -13,6 +13,7 @@ CREATE TABLE [dbo].[Hospital](
 	[Rating] [tinyint] NULL,
 	[Name] [nchar](10) NULL,
 	[CIT_ID] [smallint] NULL,
+	[owner_id] [nchar](30) NULL,
  CONSTRAINT [PK_Hospital] PRIMARY KEY CLUSTERED 
 (
 	[H_ID] ASC
@@ -28,5 +29,12 @@ ON DELETE CASCADE
 GO
 
 ALTER TABLE [dbo].[Hospital] CHECK CONSTRAINT [FK_Hospital_City]
+GO
+
+ALTER TABLE [dbo].[Hospital]  WITH CHECK ADD  CONSTRAINT [FK_Hospital_Login] FOREIGN KEY([owner_id])
+REFERENCES [dbo].[Login] ([Username])
+GO
+
+ALTER TABLE [dbo].[Hospital] CHECK CONSTRAINT [FK_Hospital_Login]
 GO
 
