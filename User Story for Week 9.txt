@@ -3,3 +3,5 @@ User Story for Week 9:
 -Add update and delete functions to the edit page for the hospital users
 -Add an editing page for the database administrators
 -Tweak constraints for stored procedures and input forms on the front end
+-All stored procedures (edit, update, delete)
+-Add, edit, delete 1 thing from the front end
