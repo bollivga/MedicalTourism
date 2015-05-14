@@ -1,0 +1,6 @@
+Make secure user accounts for hospitals for editing the database on the front end
+
+Make secure user accounts for administrators for mass-updating tables from the back end
+
+Admin accounts can edit all tables
+Hospital accounts can edit the OFFERS
