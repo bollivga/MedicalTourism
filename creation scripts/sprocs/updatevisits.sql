@@ -1,7 +1,7 @@
 USE [MedicalTourism]
 GO
 
-/****** Object:  StoredProcedure [dbo].[NewAirlineRoute]    Script Date: 5/7/2015 2:28:13 PM ******/
+/****** Object:  StoredProcedure [dbo].[UpdateVisits]    Script Date: 5/7/2015 2:28:51 PM ******/
 SET ANSI_NULLS ON
 GO
 
@@ -9,8 +9,7 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 
-
-CREATE PROC [dbo].[NewAirlineRoute]
+CREATE PROC [dbo].[UpdateVisits]
 @AirlineID int,
 @CityID int,
 @Cost money,
@@ -30,8 +29,9 @@ BEGIN
 	ROLLBACK TRANSACTION
 END
 
-INSERT INTO [Visits]
-VALUES (@AirlineID, @CityID, @Cost)
+UPDATE [Visits]
+SET Avg_cost = @Cost
+WHERE A_ID = @AirlineID and CIT_ID = @CityID
 
 
 

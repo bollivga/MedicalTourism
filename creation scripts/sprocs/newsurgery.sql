@@ -18,7 +18,15 @@ CREATE PROC [dbo].[NewSurgery]
 
 AS
 
-INSERT INTO [Surgery]
+IF((SELECT COUNT(1) FROM Surgery WHERE
+	S_NAME = @SurgeryName AND
+	Type = @SUrgeryType
+	GROUP BY S_NAME) > 0)
+BEGIN
+	RAISERROR ('Surgery already exists',14,1)
+END
+
+INSERT INTO [Surgery](S_NAME,Type,US_cost,Recovery)
 VALUES (@SurgeryName, @SurgeryType, @HugeCost, @RecoveryTime)
 
 

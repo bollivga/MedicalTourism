@@ -18,13 +18,21 @@ CREATE PROC [dbo].[NewCity]
 
 AS
 
+IF((SELECT COUNT(1) FROM City WHERE
+	NAME = @CityName AND
+	CO_NAME = @Country
+	GROUP BY NAME) > 0)
+BEGIN
+	RAISERROR ('City+country combo already in use',14,1)
+END
+
 DECLARE @CityID int
 SET @CityID = (SELECT max(CIT_ID) FROM [City]) + 1
 
-INSERT INTO [City]
+INSERT INTO [City](CIT_ID,Name,Rating,CO_NAME)
 VALUES (@CityID, @CityName, @Rating, @Country)
 
 
-
+RETURN 0
 GO
 
