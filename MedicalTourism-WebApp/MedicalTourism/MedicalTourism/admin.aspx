@@ -186,6 +186,8 @@
                         <h3>Delete a hotel:</h3>
                             <p>Select a hotel ID from above:</p>
                                 <p><asp:TextBox runat="server" ID="adminDeleteHotelID"/></p>
+                            <p>Input the city ID:</p>
+                                <p><asp:TextBox runat="server" ID="adminDeleteHotelCityID"/></p>
                             <p><asp:Button runat="server" Text="Delete" ID="adminDeleteHotel" OnClick="deleteHotel"/></p>
                             <p><asp:PlaceHolder runat="server" ID="adminDeletedHotel"/></p>
                     </div>

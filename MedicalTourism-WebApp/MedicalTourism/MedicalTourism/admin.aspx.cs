@@ -522,6 +522,7 @@ namespace MedicalTourism
         protected void deleteHotel(object sender, EventArgs e)
         {
             string id = String.Format("{0}", adminDeleteHotelID.Text);
+            string cityid = String.Format("{0}", adminDeleteHotelCityID.Text);
 
             using (SqlConnection con = new SqlConnection("user id=333Spring2015Medical;password=v4rewrapHEgequbr;server=titan.csse.rose-hulman.edu;database=medicaltourism;connection timeout=30"))
             {
@@ -530,6 +531,7 @@ namespace MedicalTourism
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@HotelID", id);
+                    cmd.Parameters.AddWithValue("@CityID", cityid);
 
                     try
                     {
