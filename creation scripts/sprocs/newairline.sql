@@ -21,6 +21,7 @@ SET @AirlineID = (SELECT max(A_ID) FROM [Airline]) + 1
 IF(@AirlineName in (SELECT Name FROM Airline))
 BEGIN
 	RAISERROR ('Airline name already in use',14,1)
+	ROLLBACK TRANSACTION
 END
 
 INSERT INTO [Airline](A_ID,Name)

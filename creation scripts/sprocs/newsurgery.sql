@@ -24,6 +24,7 @@ IF((SELECT COUNT(1) FROM Surgery WHERE
 	GROUP BY S_NAME) > 0)
 BEGIN
 	RAISERROR ('Surgery already exists',14,1)
+	ROLLBACK TRANSACTION
 END
 
 INSERT INTO [Surgery](S_NAME,Type,US_cost,Recovery)

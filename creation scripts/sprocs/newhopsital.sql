@@ -23,6 +23,7 @@ AS
 IF (@CityID not in (SELECT CIT_ID FROM [City]))
 BEGIN
 	RAISERROR ('City ID not valid. No changes made to database. Please add new city before trying again.',14,1)
+	ROLLBACK TRANSACTION
 END
 
 DECLARE @Hospital_ID int
@@ -35,6 +36,7 @@ IF((SELECT COUNT(1) FROM Hospital WHERE
 	) > 0)
 BEGIN
 	RAISERROR ('Duplicate data: Hospital name+location already in use',14,1)
+	ROLLBACK TRANSACTION
 END
 
 INSERT INTO [Hospital] (H_ID,Rating,Name,CIT_ID)

@@ -24,6 +24,7 @@ IF((SELECT COUNT(1) FROM City WHERE
 	GROUP BY NAME) > 0)
 BEGIN
 	RAISERROR ('City+country combo already in use',14,1)
+	ROLLBACK TRANSACTION
 END
 
 DECLARE @CityID int

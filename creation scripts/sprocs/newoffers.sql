@@ -26,11 +26,13 @@ IF((SELECT COUNT(1) FROM Offers WHERE
 	GROUP BY S_NAME) > 0)
 BEGIN
 	RAISERROR ('Hospital already offers procedure.',14,1)
+	ROLLBACK TRANSACTION
 END
 
 IF (@HospitalID not in (SELECT H_ID FROM [Hospital]))
 BEGIN
 	RAISERROR ('Hospital ID not valid. No changes made to database. Please add new hospital before trying again.',14,1)
+	ROLLBACK TRANSACTION
 END
 
 INSERT INTO [Offers](S_NAME,H_ID,Avg_Cost)

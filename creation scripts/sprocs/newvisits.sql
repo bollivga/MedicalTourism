@@ -24,17 +24,19 @@ IF((SELECT COUNT(1) FROM Visits WHERE
 	GROUP BY CIT_ID) > 0)
 BEGIN
 	RAISERROR ('Airline route already in database',14,1)
+	ROLLBACK TRANSACTION
 END
 
 IF (@AirlineID not in (SELECT A_ID FROM [Airline]))
 BEGIN
 RAISERROR ('Airline ID not valid. No changes made to database. Please add new airline before trying again.',14,1)
-
+ROLLBACK TRANSACTION
 END
 
 IF (@CityID not in (SELECT CIT_ID FROM [City]))
 BEGIN
 RAISERROR ('City ID not valid. No changes made to database. Please add new city before trying again.',14,1)
+ROLLBACK TRANSACTION
 END
 
 INSERT INTO [Visits](A_ID,CIT_ID,Avg_cost)

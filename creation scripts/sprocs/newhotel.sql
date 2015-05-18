@@ -20,6 +20,7 @@ AS
 IF (@CityID not in (SELECT CIT_ID FROM [City]))
 BEGIN
 	RAISERROR ('City ID not valid. No changes made to database. Please add new city before trying again.',14,1)
+	ROLLBACK TRANSACTION
 END
 
 IF((SELECT COUNT(1) FROM Hotel WHERE
@@ -29,6 +30,7 @@ IF((SELECT COUNT(1) FROM Hotel WHERE
 	GROUP BY NAME) > 0)
 BEGIN
 	RAISERROR ('City+Hotel+Cost combo already in use',14,1)
+	ROLLBACK TRANSACTION
 END
 
 DECLARE @Hotel_ID int
