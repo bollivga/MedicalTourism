@@ -11,50 +11,39 @@
     <h1>Medical Tourism Advisor</h1>
     <p><b>Please fill out this form regarding your desired medical procedure</b></p>
     <form runat="server">
-    <p>Surgery Category:</p>
-    <select id="category" runat="server">
-        <option value="Cosmetic">Cosmetic</option>
-        <option value="Neurosrgy">Neurosurgery</option>
-        <option value="Organ trns">Organ Transplant</option>
-        <option value="Orthopedic">Orthopedic</option>
-        <option value="Thoracic">Thoracic</option>
-        <option value="Endocrine">Endocrine</option>
-    </select>
-    <p>Country Preferred:</p>
-    <select id="country" runat="server">
-        <option value="--">--</option>
-        <option value="Austria">Austria</option>
-        <option value="Brazil">Brazil</option>
-        <option value="Bulgaria">Bulgaria</option>
-        <option value="Chile">Chile</option>
-        <option value="China">China</option>
-        <option value="Egypt">Egypt</option>
-        <option value="England">England</option>
-        <option value="France">France</option>
-        <option value="Germany">Germany</option>
-        <option value="India">India</option>
-        <option value="Ireland">Ireland</option>
-        <option value="Italy">Italy</option>
-        <option value="Japan">Japan</option>
-        <option value="Norway">Norway</option>
-        <option value="S.Korea">South Korea</option>
-        <option value="Scotland">Scotland</option>
-        <option value="Spain">Spain</option>
-        <option value="Sweden">Sweden</option>
-        <option value="Ukraine">Ukraine</option>
-    </select>
-    <p>Minimum Rating (Out of 5):</p>
-    <select id="rating" runat="server">
-        <option value="0">0</option>
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-        <option value="5">5</option>
-    </select>
-    <p></p>
-    <asp:Button runat="server" Text="Submit" ID="aspsubmit" OnClick="aspsubmit_Click"/>
-    <p><asp:PlaceHolder ID = "PlaceHolder1" runat="server"/></p>
+        <p>Surgery Category:</p>
+        <asp:DropDownList runat="server" id="category"></asp:DropDownList>
+        <p>Country Preferred:</p>
+        <asp:DropDownList runat="server" id="country"></asp:DropDownList>
+        <p>Minimum Rating (Out of 5):</p>
+        <select id="rating" runat="server">
+            <option value="0">0</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+        </select>
+        <p></p>
+        <asp:Button runat="server" Text="Submit" ID="aspsubmit" OnClick="aspsubmit_Click"/>
+        <p><asp:PlaceHolder ID = "PlaceHolder1" runat="server"/></p>
+        <div runat="server" visible="false" ID="secondForm">
+            <p>Select a city from the results:</p>
+            <p><asp:DropDownList runat="server" ID="city"/></p>
+            <p>Select a surgery form the results:</p>
+            <p><asp:DropDownList runat="server" ID="surgery"/></p>
+            <p><asp:Button runat="server" Text="Submit" ID="submitFirstResults" OnClick="resultSubmit"/></p>
+        </div>
+        <div runat="server" visible="false" ID="thirdForm">
+            <p>Trip info:</p>
+            <p><asp:GridView runat="server" ID="tripInfo"/></p>
+            <p>Price info:</p>
+            <p><asp:GridView runat="server" ID="priceInfo"/></p>
+        </div>
     </form>
+    <div class="footer" style="position:absolute; bottom:0;">
+        <p><asp:HyperLink runat="server" Text="Admin login" NavigateUrl="~/admin.aspx"/></p>
+        <p><asp:HyperLink runat="server" Text="Register as a hospital" NavigateUrl="~/Register.aspx"/></p>
+    </div>
 </body>
 </html>
