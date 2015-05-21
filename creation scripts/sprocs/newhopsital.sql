@@ -11,7 +11,7 @@ GO
 
 
 CREATE PROC [dbo].[NewHospital]
-@H_Name varchar(10),
+@H_Name varchar(40),
 @CityID int,
 @Rating int,
 @PIN int
@@ -19,11 +19,28 @@ CREATE PROC [dbo].[NewHospital]
 AS
 
 
+IF((@H_NAME IS NULL) OR (@CityID IS NULL) OR (@Rating IS NULL))
+BEGIN
+RAISERROR ('Invalid null input',14,1)
+	RETURN
+END
+
+IF(@Rating < 0)
+BEGIN
+RAISERROR ('Invalid input: rating below 0',14,1)
+	RETURN
+END
+
+IF(@Rating > 5)
+BEGIN
+RAISERROR ('Invalid input: rating above 5',14,1)
+	RETURN
+END
 
 IF (@CityID not in (SELECT CIT_ID FROM [City]))
 BEGIN
 	RAISERROR ('City ID not valid. No changes made to database. Please add new city before trying again.',14,1)
-	ROLLBACK TRANSACTION
+	RETURN
 END
 
 DECLARE @Hospital_ID int
@@ -36,7 +53,7 @@ IF((SELECT COUNT(1) FROM Hospital WHERE
 	) > 0)
 BEGIN
 	RAISERROR ('Duplicate data: Hospital name+location already in use',14,1)
-	ROLLBACK TRANSACTION
+	RETURN
 END
 
 INSERT INTO [Hospital] (H_ID,Rating,Name,CIT_ID)

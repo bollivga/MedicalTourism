@@ -8,29 +8,29 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
-CREATE TABLE [dbo].[Offers](
-	[S_NAME] [nchar](20) NOT NULL,
+CREATE TABLE [dbo].[Offers1](
+	[S_NAME] [nchar](40) NOT NULL,
 	[H_ID] [smallint] NOT NULL,
 	[Avg_cost] [money] NOT NULL
 ) ON [PRIMARY]
 
 GO
 
-ALTER TABLE [dbo].[Offers]  WITH CHECK ADD  CONSTRAINT [FK_Offers_Hospital] FOREIGN KEY([H_ID])
-REFERENCES [dbo].[Hospital] ([H_ID])
+ALTER TABLE [dbo].[Offers1]  WITH CHECK ADD  CONSTRAINT [FK_Offers_Hospital1] FOREIGN KEY([H_ID])
+REFERENCES [dbo].[Hospital1] ([H_ID])
 ON UPDATE CASCADE
 ON DELETE CASCADE
 GO
 
-ALTER TABLE [dbo].[Offers] CHECK CONSTRAINT [FK_Offers_Hospital]
+ALTER TABLE [dbo].[Offers1] CHECK CONSTRAINT [FK_Offers_Hospital1]
 GO
 
-ALTER TABLE [dbo].[Offers]  WITH CHECK ADD  CONSTRAINT [FK_Offers_Surgery] FOREIGN KEY([S_NAME])
-REFERENCES [dbo].[Surgery] ([S_NAME])
+ALTER TABLE [dbo].[Offers1]  WITH CHECK ADD  CONSTRAINT [FK_Offers_Surgery1] FOREIGN KEY([S_NAME])
+REFERENCES [dbo].[Surgery1] ([S_NAME])
 ON UPDATE CASCADE
 ON DELETE CASCADE
 GO
 
-ALTER TABLE [dbo].[Offers] CHECK CONSTRAINT [FK_Offers_Surgery]
+ALTER TABLE [dbo].[Offers1] CHECK CONSTRAINT [FK_Offers_Surgery1]
 GO
 

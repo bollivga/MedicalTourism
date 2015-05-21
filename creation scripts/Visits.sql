@@ -8,7 +8,7 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
-CREATE TABLE [dbo].[Visits](
+CREATE TABLE [dbo].[Visits1](
 	[A_ID] [smallint] NOT NULL,
 	[CIT_ID] [smallint] NOT NULL,
 	[Avg_cost] [money] NOT NULL
@@ -16,21 +16,21 @@ CREATE TABLE [dbo].[Visits](
 
 GO
 
-ALTER TABLE [dbo].[Visits]  WITH CHECK ADD  CONSTRAINT [FK_Visits_Airline] FOREIGN KEY([A_ID])
-REFERENCES [dbo].[Airline] ([A_ID])
+ALTER TABLE [dbo].[Visits1]  WITH CHECK ADD  CONSTRAINT [FK_Visits_Airline1] FOREIGN KEY([A_ID])
+REFERENCES [dbo].[Airline1] ([A_ID])
 ON UPDATE CASCADE
 ON DELETE CASCADE
 GO
 
-ALTER TABLE [dbo].[Visits] CHECK CONSTRAINT [FK_Visits_Airline]
+ALTER TABLE [dbo].[Visits1] CHECK CONSTRAINT [FK_Visits_Airline1]
 GO
 
-ALTER TABLE [dbo].[Visits]  WITH CHECK ADD  CONSTRAINT [FK_Visits_City] FOREIGN KEY([CIT_ID])
-REFERENCES [dbo].[City] ([CIT_ID])
+ALTER TABLE [dbo].[Visits1]  WITH CHECK ADD  CONSTRAINT [FK_Visits_City1] FOREIGN KEY([CIT_ID])
+REFERENCES [dbo].[City1] ([CIT_ID])
 ON UPDATE CASCADE
 ON DELETE CASCADE
 GO
 
-ALTER TABLE [dbo].[Visits] CHECK CONSTRAINT [FK_Visits_City]
+ALTER TABLE [dbo].[Visits1] CHECK CONSTRAINT [FK_Visits_City1]
 GO
 

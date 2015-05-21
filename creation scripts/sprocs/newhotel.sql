@@ -11,16 +11,34 @@ GO
 
 
 CREATE PROC [dbo].[NewHotel]
-@Name varchar(20),
+@Name varchar(40),
 @CityID smallint,
 @CostPerNight money
 
 AS
+IF((@Name IS NULL) OR (@CityID IS NULL) OR (@CostPerNight IS NULL))
+
+BEGIN
+RAISERROR ('Invalid null input',14,1)
+	RETURN
+END
+
+IF(@CostPerNight < 0)
+BEGIN
+RAISERROR ('Invalid input: cost below 0',14,1)
+	RETURN
+END
+
+IF(@Name = '')
+BEGIN
+RAISERROR ('Invalid input: no name',14,1)
+	RETURN
+END
 
 IF (@CityID not in (SELECT CIT_ID FROM [City]))
 BEGIN
 	RAISERROR ('City ID not valid. No changes made to database. Please add new city before trying again.',14,1)
-	ROLLBACK TRANSACTION
+	RETURN
 END
 
 IF((SELECT COUNT(1) FROM Hotel WHERE
@@ -30,7 +48,7 @@ IF((SELECT COUNT(1) FROM Hotel WHERE
 	GROUP BY NAME) > 0)
 BEGIN
 	RAISERROR ('City+Hotel+Cost combo already in use',14,1)
-	ROLLBACK TRANSACTION
+	RETURN
 END
 
 DECLARE @Hotel_ID int

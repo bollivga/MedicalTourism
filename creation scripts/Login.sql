@@ -8,11 +8,12 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
-CREATE TABLE [dbo].[Login](
-	[Username] [nchar](30) NOT NULL,
-	[Password] [nchar](10) NOT NULL,
+CREATE TABLE [dbo].[Login1](
+	[Username] [nchar](40) NOT NULL,
+	[Password] [nchar](40) NOT NULL,
 	[Permission level] [tinyint] NOT NULL,
- CONSTRAINT [PK_Login] PRIMARY KEY CLUSTERED 
+	[Owner_ID][nchar](40) NOT NULL,
+ CONSTRAINT [PK_Login1] PRIMARY KEY CLUSTERED 
 (
 	[Username] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]

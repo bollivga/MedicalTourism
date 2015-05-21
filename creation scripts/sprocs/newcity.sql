@@ -11,12 +11,35 @@ GO
 
 
 CREATE PROC [dbo].[NewCity]
-@CityName varchar(10),
+@CityName varchar(40),
 @Rating int,
-@Country varchar(20),
+@Country varchar(40),
 @PIN int
 
 AS
+IF((@CityName IS NULL) OR (@Rating IS NULL) OR (@Country IS NULL))
+BEGIN
+RAISERROR ('Invalid null input',14,1)
+	RETURN
+END
+
+IF(@Rating < 0)
+BEGIN
+RAISERROR ('Invalid input: rating below 0',14,1)
+	RETURN
+END
+
+IF(@Rating > 5)
+BEGIN
+RAISERROR ('Invalid input: rating above 5',14,1)
+	RETURN
+END
+
+IF(@CityName = '')
+BEGIN
+RAISERROR ('Invalid input: no city name',14,1)
+	RETURN
+END
 
 IF((SELECT COUNT(1) FROM City WHERE
 	NAME = @CityName AND
