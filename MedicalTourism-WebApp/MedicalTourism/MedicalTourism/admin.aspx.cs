@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Security.Cryptography;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data;
 using System.Text;
 using System.Configuration;
 using System.Data.SqlClient;
+using PasswordHash;
 
 namespace MedicalTourism
 {
@@ -15,59 +17,68 @@ namespace MedicalTourism
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            selectFromDatabase();
+            if (!IsPostBack) 
+            {
+                selectFromDatabase();
+            }
         }
 
         protected void login(object sender, EventArgs e)
         {
-
             string user = String.Format("{0}", username.Text);
-            string pinNumber = String.Format("{0}", pin.Text);
+            string password = String.Format("{0}", pin.Text);
 
-            if (user == "hospital" && pinNumber == "0000") 
-            {
-                adminForm.Visible = false;
-                addForm.Visible = true;
-
-                ////Building an HTML string.
-                //StringBuilder html = new StringBuilder();
-
-                ////Text boxes and their headers:
-                //html.Append("<h3>Add a new hospital:</h3>");
-                //html.Append("<p>Hospital name:</p>");
-                //html.Append("<asp:TextBox runat=\"server\" id=\"hospitalName\"/>");
-                //html.Append("<p>City name:</p>");
-                //html.Append("<asp:TextBox runat=\"server\" id=\"cityName\"/>");
-                //html.Append("<asp:Button runat=\"server\" id=\"addH\" OnClick=\"addHospital\">");
-                //html.Append("<h3>Add a new surgery:</h3>");
-                //html.Append("<p>Hospital name:</p>");
-                //html.Append("<asp:TextBox runat=\"server\" id=\"hospitalForSurgery\"/>");
-                //html.Append("<p>Surgery name:</p>");
-                //html.Append("<asp:TextBox runat=\"server\" id=\"surgeryName\"/>");
-                //html.Append("<asp:Button runat=\"server\" id=\"addS\" OnClick=\"addSurgery\">");
-
-                ////Append the HTML string to Placeholder.
-                //editForm.Controls.Add(new Literal { Text = html.ToString() });
-
-
-            }
-            else if (user == "admin" && pinNumber == "1234") {
-
-                addForm.Visible = false;
-                adminForm.Visible = true;
-
-
-            }
-            else
+            using (SqlConnection con = new SqlConnection("user id=333Spring2015Medical;password=v4rewrapHEgequbr;server=titan.csse.rose-hulman.edu;database=medicaltourism;connection timeout=30"))
             {
 
-                StringBuilder html = new StringBuilder();
-                html.Append("<div style=\"color:#FF0000\"><p>Invalid username or password.</p></div>");
-                editForm.Controls.Add(new Literal { Text = html.ToString() });
+                using (SqlCommand cmd = new SqlCommand("Verify", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@Username", user);
+                    //cmd.Parameters.AddWithValue("@HashedPassword", password);
+
+                    try
+                    {
+                        con.Open();
+                        SqlDataReader dr = cmd.ExecuteReader();
+                        dr.Read();
+                        string hashpass = dr.GetString(0);
+                        int acclevel = Int32.Parse(dr.GetValue(1).ToString());
+                        con.Close();
+                        if (PasswordHash.PasswordHash.ValidatePassword(password, hashpass)) 
+                        { 
+                            if (acclevel == 0) 
+                            {
+                                StringBuilder html = new StringBuilder();
+                                html.Append("<div style=\"color:#FF0000\"><p>Account not yet verified.</p></div>");
+                                editForm.Controls.Add(new Literal { Text = html.ToString() });
+                            }
+                            else if (acclevel == 1) 
+                            {
+                                adminForm.Visible = false;
+                                addForm.Visible = true;
+                            }
+                            else if (acclevel == 2) 
+                            { 
+                                addForm.Visible = false;
+                                adminForm.Visible = true;                            
+                            }
+                        }
+                        else
+                        {
+                            StringBuilder html = new StringBuilder();
+                            html.Append("<div style=\"color:#FF0000\"><p>Invalid username or password.</p></div>");
+                            editForm.Controls.Add(new Literal { Text = html.ToString() });                            
+                        }
+                    }
+                    catch (SqlException ex)
+                    {
+                        editForm.Controls.Add(new Literal { Text = ex.Message });
+                    }
+
+                }
 
             }
-
-            
 
         }
 
@@ -75,72 +86,73 @@ namespace MedicalTourism
 
             //Populating a DataTable from database.
             SqlConnection con = new SqlConnection("user id=333Spring2015Medical;password=v4rewrapHEgequbr;server=titan.csse.rose-hulman.edu;database=MedicalTourism;connection timeout=30");
-            SqlCommand airlineSelect = new SqlCommand();
-            SqlCommand citySelect = new SqlCommand();
-            SqlCommand hospitalSelect = new SqlCommand();
-            SqlCommand hotelSelect = new SqlCommand();
-            SqlCommand offersSelect = new SqlCommand();
-            SqlCommand surgerySelect = new SqlCommand();
-            SqlCommand visitsSelect = new SqlCommand();
-            airlineSelect.CommandText = "SELECT A_ID AS AirlineID, Name AS AirlineName FROM Airline";
-            airlineSelect.CommandType = CommandType.Text;
-            airlineSelect.Connection = con;
-            citySelect.CommandText = "SELECT * FROM CITY";
-            citySelect.CommandType = CommandType.Text;
-            citySelect.Connection = con;
-            hospitalSelect.CommandText = "SELECT * FROM Hospital";
-            hospitalSelect.CommandType = CommandType.Text;
-            hospitalSelect.Connection = con;
-            hotelSelect.CommandText = "SELECT * FROM Hotel";
-            hotelSelect.CommandType = CommandType.Text;
-            hotelSelect.Connection = con;
-            offersSelect.CommandText = "SELECT * FROM Offers";
-            offersSelect.CommandType = CommandType.Text;
-            offersSelect.Connection = con;
-            surgerySelect.CommandText = "SELECT * FROM Surgery";
-            surgerySelect.CommandType = CommandType.Text;
-            surgerySelect.Connection = con;
-            visitsSelect.CommandText = "SELECT * FROM Visits";
-            visitsSelect.CommandType = CommandType.Text;
-            visitsSelect.Connection = con;
-            
-
+            SqlCommand airlineSelect = new SqlCommand() { CommandText = "SELECT A_ID AS AirlineID, Name AS AirlineName FROM Airline", CommandType = CommandType.Text, Connection = con };
             airlineSelect.Connection.Open();
             SqlDataReader airlineDR = airlineSelect.ExecuteReader(CommandBehavior.CloseConnection);
             currentAirlines.DataSource = airlineDR;
             currentAirlines.DataBind();
 
+            SqlCommand citySelect = new SqlCommand() { CommandText = "SELECT * FROM CITY", CommandType = CommandType.Text, Connection = con };
             citySelect.Connection.Open();
             SqlDataReader cityDR = citySelect.ExecuteReader(CommandBehavior.CloseConnection);
             currentCities.DataSource = cityDR;
             currentCities.DataBind();
 
+            SqlCommand hospitalSelect = new SqlCommand() { CommandText = "SELECT * FROM Hospital", CommandType = CommandType.Text, Connection = con };
             hospitalSelect.Connection.Open();
             SqlDataReader hospitalDR = hospitalSelect.ExecuteReader(CommandBehavior.CloseConnection);
             currentHospitals.DataSource = hospitalDR;
             currentHospitals.DataBind();
 
+            SqlCommand existHospitalSelect = new SqlCommand() { CommandText = "SELECT * FROM Hospital", CommandType = CommandType.Text, Connection = con };
+            existHospitalSelect.Connection.Open();
+            SqlDataReader exisHospDR = existHospitalSelect.ExecuteReader(CommandBehavior.CloseConnection);
+            existingHospitals.DataSource = exisHospDR;
+            existingHospitals.DataBind();
+
+            SqlCommand hotelSelect = new SqlCommand() { CommandText = "SELECT * FROM Hotel", CommandType = CommandType.Text, Connection = con };
             hotelSelect.Connection.Open();
             SqlDataReader hotelDR = hotelSelect.ExecuteReader(CommandBehavior.CloseConnection);
             currentHotels.DataSource = hotelDR;
             currentHotels.DataBind();
 
+            SqlCommand offersSelect = new SqlCommand() { CommandText = "SELECT * FROM Offers", CommandType = CommandType.Text, Connection = con };
             offersSelect.Connection.Open();
             SqlDataReader offersDR = offersSelect.ExecuteReader(CommandBehavior.CloseConnection);
             currentOffers.DataSource = offersDR;
             currentOffers.DataBind();
 
+            SqlCommand existOffersSelect = new SqlCommand() { CommandText = "SELECT * FROM Offers", CommandType = CommandType.Text, Connection = con };
+            existOffersSelect.Connection.Open();
+            SqlDataReader existOffersDR = existOffersSelect.ExecuteReader(CommandBehavior.CloseConnection);
+            existingOffers.DataSource = existOffersDR;
+            existingOffers.DataBind();
+
+            SqlCommand surgerySelect = new SqlCommand() { CommandText = "SELECT * FROM Surgery", CommandType = CommandType.Text, Connection = con };
             surgerySelect.Connection.Open();
             SqlDataReader surgeryDR = surgerySelect.ExecuteReader(CommandBehavior.CloseConnection);
             currentSurg.DataSource = surgeryDR;
             currentSurg.DataBind();
 
+            SqlCommand visitsSelect = new SqlCommand() { CommandText = "SELECT * FROM Visits", CommandType = CommandType.Text, Connection = con };
             visitsSelect.Connection.Open();
             SqlDataReader visitsDR = visitsSelect.ExecuteReader(CommandBehavior.CloseConnection);
             currentVisits.DataSource = visitsDR;
             currentVisits.DataBind();
 
-
+            SqlCommand deleteAirlineIDSelect = new SqlCommand() { CommandText = "SELECT A_ID FROM Airline", CommandType = CommandType.Text, Connection = con };
+            deleteAirlineIDSelect.Connection.Open();
+            using (SqlDataAdapter da = new SqlDataAdapter(deleteAirlineIDSelect))
+            { 
+                using (DataTable dt = new DataTable()) 
+                {
+                    da.Fill(dt);
+                    adminDeleteAirlineID.DataSource = dt;
+                    adminDeleteAirlineID.DataTextField = "A_ID";
+                    adminDeleteAirlineID.DataValueField = "A_ID";
+                    adminDeleteAirlineID.DataBind();
+                }
+            }
 
         }
 
@@ -213,7 +225,7 @@ namespace MedicalTourism
 
         protected void deleteAirline(object sender, EventArgs e)
         {
-            string id = String.Format("{0}", adminDeleteAirlineID.Text);
+            string id = String.Format("{0}", adminDeleteAirlineID.SelectedValue);
 
             using (SqlConnection con = new SqlConnection("user id=333Spring2015Medical;password=v4rewrapHEgequbr;server=titan.csse.rose-hulman.edu;database=medicaltourism;connection timeout=30"))
             {
@@ -522,7 +534,7 @@ namespace MedicalTourism
         protected void deleteHotel(object sender, EventArgs e)
         {
             string id = String.Format("{0}", adminDeleteHotelID.Text);
-            string cityid = String.Format("{0}", adminDeleteHotelCityID.Text);
+            //string cityid = String.Format("{0}", adminDeleteHotelCityID.Text);
 
             using (SqlConnection con = new SqlConnection("user id=333Spring2015Medical;password=v4rewrapHEgequbr;server=titan.csse.rose-hulman.edu;database=medicaltourism;connection timeout=30"))
             {
@@ -531,7 +543,7 @@ namespace MedicalTourism
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@HotelID", id);
-                    cmd.Parameters.AddWithValue("@CityID", cityid);
+                    //cmd.Parameters.AddWithValue("@CityID", cityid);
 
                     try
                     {
@@ -827,7 +839,7 @@ namespace MedicalTourism
             }
 
         }
-
+        
         protected void deleteVisit(object sender, EventArgs e)
         {
             string airlineid = String.Format("{0}", adminDeleteVisitAirlineID.Text);
@@ -863,6 +875,7 @@ namespace MedicalTourism
 
         //HOSPITAL OWNER FUNCTIONS
 
+        //HOSPITALS
         protected void addHospital(object sender, EventArgs e)
         {
             
@@ -886,6 +899,7 @@ namespace MedicalTourism
                         cmd.ExecuteNonQuery();
                         con.Close();
                         addedHospital.Controls.Add(new Literal { Text = "Hospital added successfully." });
+                        selectFromDatabase();
                     }
                     catch (SqlException ex)
                     {
@@ -897,6 +911,72 @@ namespace MedicalTourism
 
         }
 
+        protected void editHospital(object sender, EventArgs e)
+        {
+            string id = String.Format("{0}", editHospitalID.Text);
+            string rating = String.Format("{0}", editHospitalRating.SelectedValue);
+            string name = String.Format("{0}", editHospitalName.Text);
+            string cityid = String.Format("{0}", editHospitalCityID.Text);
+
+            using (SqlConnection con = new SqlConnection("user id=333Spring2015Medical;password=v4rewrapHEgequbr;server=titan.csse.rose-hulman.edu;database=medicaltourism;connection timeout=30"))
+            {
+
+                using (SqlCommand cmd = new SqlCommand("UpdateHospital", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@HospitalID", id);
+                    cmd.Parameters.AddWithValue("@HospitalRating", rating);
+                    cmd.Parameters.AddWithValue("@HospitalName", name);
+                    cmd.Parameters.AddWithValue("@CityID", cityid);
+                    cmd.Parameters.AddWithValue("@OwnerID", null);
+
+                    try
+                    {
+                        con.Open();
+                        cmd.ExecuteNonQuery();
+                        con.Close();
+                        adminEditedHospital.Controls.Add(new Literal { Text = "Hospital edited successfully." });
+                        selectFromDatabase();
+                    }
+                    catch (SqlException ex)
+                    {
+                        editedHospital.Controls.Add(new Literal { Text = ex.Message });
+                    }
+                }
+
+            }
+        }
+
+        protected void deleteHospital(object sender, EventArgs e)
+        {
+            string id = String.Format("{0}", deleteHospitalID.Text);
+
+            using (SqlConnection con = new SqlConnection("user id=333Spring2015Medical;password=v4rewrapHEgequbr;server=titan.csse.rose-hulman.edu;database=medicaltourism;connection timeout=30"))
+            {
+
+                using (SqlCommand cmd = new SqlCommand("DeleteHospital", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@HospitalID", id);
+
+                    try
+                    {
+                        con.Open();
+                        cmd.ExecuteNonQuery();
+                        con.Close();
+                        adminDeletedHospital.Controls.Add(new Literal { Text = "Hospital deleted successfully." });
+                        selectFromDatabase();
+                    }
+                    catch (SqlException ex)
+                    {
+                        deletedHospital.Controls.Add(new Literal { Text = ex.Message });
+                    }
+                }
+
+            }
+        }
+
+        //OFFERS
         protected void addOffer(object sender, EventArgs e)
         {
 
@@ -921,6 +1001,7 @@ namespace MedicalTourism
                         cmd.ExecuteNonQuery();
                         con.Close();
                         addedSurgery.Controls.Add(new Literal { Text = "Surgery added successfully." });
+                        selectFromDatabase();
                     }
                     catch (SqlException ex)
                     {
@@ -933,7 +1014,69 @@ namespace MedicalTourism
 
         }
 
+        protected void editOffer(object sender, EventArgs e)
+        {
+            string name = String.Format("{0}", editOfferSurgName.Text);
+            string hospid = String.Format("{0}", editOfferHospitalID.Text);
+            string cost = String.Format("{0}", editOfferCost.Text);
 
+            using (SqlConnection con = new SqlConnection("user id=333Spring2015Medical;password=v4rewrapHEgequbr;server=titan.csse.rose-hulman.edu;database=medicaltourism;connection timeout=30"))
+            {
+
+                using (SqlCommand cmd = new SqlCommand("UpdateOffer", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@Surgery", name);
+                    cmd.Parameters.AddWithValue("@HospitalID", hospid);
+                    cmd.Parameters.AddWithValue("@Cost", cost);
+
+                    try
+                    {
+                        con.Open();
+                        cmd.ExecuteNonQuery();
+                        con.Close();
+                        editedOffer.Controls.Add(new Literal { Text = "Offer edited successfully." });
+                        selectFromDatabase();
+                    }
+                    catch (SqlException ex)
+                    {
+                        editedOffer.Controls.Add(new Literal { Text = ex.Message });
+                    }
+                }
+
+            }
+        }
+
+        protected void deleteOffer(object sender, EventArgs e)
+        {
+            string name = String.Format("{0}", deleteOfferSurgName.Text);
+            string hospid = String.Format("{0}", deleteOfferHospitalID.Text);
+
+            using (SqlConnection con = new SqlConnection("user id=333Spring2015Medical;password=v4rewrapHEgequbr;server=titan.csse.rose-hulman.edu;database=medicaltourism;connection timeout=30"))
+            {
+
+                using (SqlCommand cmd = new SqlCommand("DeleteOffer", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@Surgery", name);
+                    cmd.Parameters.AddWithValue("@HospitalID", hospid);
+
+                    try
+                    {
+                        con.Open();
+                        cmd.ExecuteNonQuery();
+                        con.Close();
+                        deletedOffer.Controls.Add(new Literal { Text = "Offer deleted successfully." });
+                        selectFromDatabase();
+                    }
+                    catch (SqlException ex)
+                    {
+                        deletedOffer.Controls.Add(new Literal { Text = ex.Message });
+                    }
+                }
+
+            }
+        }
     }
 
 }

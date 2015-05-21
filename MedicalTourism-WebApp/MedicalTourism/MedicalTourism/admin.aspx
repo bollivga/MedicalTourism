@@ -9,36 +9,85 @@
 <body>
     <form id="form1" runat="server">
         <div>
-            <p>Please input your username and PIN number:</p>
+            <p>Please input your username and password:</p>
             <asp:TextBox runat="server" id="username"/>
             <asp:TextBox runat="server" id="pin" TextMode="Password"/>
             <asp:Button runat="server" id="loginSubmit" Text="Submit" OnClick="login"/>
         </div>
         <div>
             <asp:PlaceHolder runat="server" id="editForm"/>
-            <div runat="server" visible="false" id="addForm">
-                <h3>Add a new hospital:</h3>
-                <p>Hospital name:</p>
-                <asp:TextBox runat="server" id="hospitalName"/>
-                <p>City ID:</p>
-                <asp:TextBox runat="server" id="cityName"/>
-                <asp:Button runat="server" Text="Add" id="addH" OnClick="addHospital"/>
-                <asp:PlaceHolder runat="server" ID="addedHospital"/>
-                <h3>Add a new surgery:</h3>
-                <p>Hospital ID:</p>
-                <asp:TextBox runat="server" id="hospitalForSurgery"/>
-                <p>Surgery name:</p>
-                <asp:TextBox runat="server" id="surgeryName"/>
-                <p>Price:</p>
-                <asp:TextBox runat="server" id="surgeryPrice"/>
-                <asp:Button runat="server" Text="Add" id="addS" OnClick="addOffer"/>
-                <asp:PlaceHolder runat="server" ID="addedSurgery"/>
+            <div runat="server" visible="false" id="addForm" style="width:auto;">
+                <!--HOSPITALS-->
+                <div style="width:400px; float:left;">
+                    <h3>Current hospitals:</h3>
+                        <p><asp:GridView runat="server" ID="existingHospitals"/></p>
+                    <h3>Add a new hospital:</h3>
+                        <p>Hospital name:</p>
+                            <asp:TextBox runat="server" id="hospitalName"/>
+                        <p>City ID:</p>
+                            <asp:TextBox runat="server" id="cityName"/>
+                        <asp:Button runat="server" Text="Add" id="addH" OnClick="addHospital"/>
+                        <asp:PlaceHolder runat="server" ID="addedHospital"/>
+                    <h3>Edit a hospital:</h3>
+                        <p>Select a hospital ID from above:</p>
+                            <p><asp:TextBox runat="server" ID="editHospitalID"/></p>
+                        <p>Enter a new rating for this hospital:</p>
+                            <p><asp:DropDownList runat="server" ID="editHospitalRating">
+                                <asp:ListItem Text="--" Value="--"></asp:ListItem>
+                                <asp:ListItem Text="1" Value="1"></asp:ListItem>
+                                <asp:ListItem Text="2" Value="2"></asp:ListItem>
+                                <asp:ListItem Text="3" Value="3"></asp:ListItem>
+                                <asp:ListItem Text="4" Value="4"></asp:ListItem>
+                                <asp:ListItem Text="5" Value="5"></asp:ListItem>
+                            </asp:DropDownList></p>
+                        <p>Enter a new name for this hospital:</p>
+                            <p><asp:TextBox runat="server" ID="editHospitalName"/></p>
+                        <p>Enter a new city ID for this hospital:</p>
+                            <p><asp:DropDownList runat="server" ID="editHospitalCityID"></asp:DropDownList></p>
+                        <p><asp:Button runat="server" Text="Update" OnClick="editHospital"/></p>
+                        <p><asp:PlaceHolder runat="server" ID="editedHospital"/></p>
+                    <h3>Delete a hospital:</h3>
+                        <p>Select a hospital ID:</p>
+                            <p><asp:TextBox runat="server" ID="deleteHospitalID"/></p>
+                        <p><asp:Button runat="server" Text="Delete" OnClick="deleteHospital"/></p>
+                        <p><asp:PlaceHolder runat="server" ID="deletedHospital"/></p>
+                </div>
+                <!--OFFERS-->
+                <div style="width:400px; float:left;">
+                    <h3>Current surgeries offered:</h3>
+                        <p><asp:GridView runat="server" ID="existingOffers"/></p>
+                    <h3>Add a new offer:</h3>
+                        <p>Hospital ID:</p>
+                            <asp:TextBox runat="server" id="hospitalForSurgery"/>
+                        <p>Surgery name:</p>
+                            <asp:TextBox runat="server" id="surgeryName"/>
+                        <p>Price:</p>
+                            <asp:TextBox runat="server" id="surgeryPrice"/>
+                        <asp:Button runat="server" Text="Add" id="addS" OnClick="addOffer"/>
+                        <asp:PlaceHolder runat="server" ID="addedSurgery"/>
+                    <h3>Edit an offer:</h3>
+                        <p>Select a surgery name from above:</p>
+                            <p><asp:TextBox runat="server" ID="editOfferSurgName"/></p>
+                        <p>Enter a hospital ID:</p>
+                            <p><asp:TextBox runat="server" ID="editOfferHospitalID"/></p>
+                        <p>Enter the cost:</p>
+                            <p><asp:TextBox runat="server" ID="editOfferCost"/></p>
+                        <p><asp:Button runat="server" Text="Update" OnClick="editOffer"/></p>
+                        <p><asp:PlaceHolder runat="server" ID="editedOffer"/></p>
+                    <h3>Delete an offer:</h3>
+                        <p>Select a surgery name from above:</p>
+                            <p><asp:TextBox runat="server" ID="deleteOfferSurgName"/></p>
+                        <p>Select a hospital ID:</p>
+                            <p><asp:TextBox runat="server" ID="deleteOfferHospitalID"/></p>
+                        <p><asp:Button runat="server" Text="Delete" OnClick="deleteOffer"/></p>
+                        <p><asp:PlaceHolder runat="server" ID="deletedOffer"/></p>
+                </div>
             </div>
-            <div runat="server" visible="false" id="adminForm">
+            <div runat="server" visible="false" id="adminForm" style="width:2800px">
                 <h2>Edit the database below:</h2>
 
                     <!--AIRLINES-->
-                    <div>
+                    <div style="width:400px; float:left;">
                     <h3>Current airlines:</h3>
                         <p><asp:GridView runat="server" ID="currentAirlines"/></p>
                     <h3>Add a new airline:</h3>
@@ -55,13 +104,13 @@
                         <asp:PlaceHolder runat="server" ID="adminEditedAirline"/>
                     <h3>Delete an airline:</h3>
                         <p>Select an airline ID from above:</p>
-                            <p><asp:TextBox runat="server" ID="adminDeleteAirlineID"/></p>
+                            <p><asp:DropDownList runat="server" ID="adminDeleteAirlineID"/></p>
                         <p><asp:Button runat="server" Text="Delete" ID="adminDeleteAirline" OnClick="deleteAirline"/></p>
                         <p><asp:PlaceHolder runat="server" ID="adminDeletedAirline"/></p>
                     </div>
                     
                     <!--CITIES-->
-                    <div>
+                    <div style="width:400px; float:left;">
                     <h3>Current cities:</h3>
                         <p><asp:GridView runat="server" ID="currentCities"/></p>
 
@@ -109,7 +158,7 @@
                     </div>
                     
                     <!--HOSPITALS-->
-                    <div>
+                    <div style="width:400px; float:left;">
                         <h3>Current hospitals:</h3>
                             <p><asp:GridView runat="server" ID="currentHospitals"/></p>
 
@@ -157,7 +206,7 @@
                     </div>
 
                     <!--HOTELS-->
-                    <div>
+                    <div style="width:400px; float:left;">
                         <h3>Current hotels:</h3>
                             <p><asp:GridView runat="server" ID="currentHotels"/></p>
 
@@ -186,14 +235,12 @@
                         <h3>Delete a hotel:</h3>
                             <p>Select a hotel ID from above:</p>
                                 <p><asp:TextBox runat="server" ID="adminDeleteHotelID"/></p>
-                            <p>Input the city ID:</p>
-                                <p><asp:TextBox runat="server" ID="adminDeleteHotelCityID"/></p>
                             <p><asp:Button runat="server" Text="Delete" ID="adminDeleteHotel" OnClick="deleteHotel"/></p>
                             <p><asp:PlaceHolder runat="server" ID="adminDeletedHotel"/></p>
                     </div>
                     
                     <!--OFFERS-->
-                    <div>
+                    <div style="width:400px; float:left;">
                         <h3>Current surgeries offered:</h3>
                             <p><asp:GridView runat="server" ID="currentOffers"/></p>
                         <h3>Add an offer:</h3>
@@ -226,7 +273,7 @@
                     </div>
 
                     <!--SURGERIES-->
-                    <div>
+                    <div style="width:400px; float:left;">
                         <h3>Current surgeries:</h3>
                             <p><asp:GridView runat="server" ID="currentSurg"/></p>
                         <h3>Add a new surgery:</h3>
@@ -262,7 +309,7 @@
                     </div>
 
                     <!--VISITS-->
-                    <div>
+                    <div style="width:400px; float:left;">
                         <h3>Current visits:</h3>
                             <p><asp:GridView runat="server" ID="currentVisits"/></p>
                         <h3>Add a new visit:</h3>

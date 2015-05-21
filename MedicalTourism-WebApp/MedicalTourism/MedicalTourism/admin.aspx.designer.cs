@@ -67,6 +67,15 @@ namespace MedicalTourism {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl addForm;
         
         /// <summary>
+        /// existingHospitals control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView existingHospitals;
+        
+        /// <summary>
         /// hospitalName control.
         /// </summary>
         /// <remarks>
@@ -101,6 +110,78 @@ namespace MedicalTourism {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.PlaceHolder addedHospital;
+        
+        /// <summary>
+        /// editHospitalID control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox editHospitalID;
+        
+        /// <summary>
+        /// editHospitalRating control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList editHospitalRating;
+        
+        /// <summary>
+        /// editHospitalName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox editHospitalName;
+        
+        /// <summary>
+        /// editHospitalCityID control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList editHospitalCityID;
+        
+        /// <summary>
+        /// editedHospital control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.PlaceHolder editedHospital;
+        
+        /// <summary>
+        /// deleteHospitalID control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox deleteHospitalID;
+        
+        /// <summary>
+        /// deletedHospital control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.PlaceHolder deletedHospital;
+        
+        /// <summary>
+        /// existingOffers control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView existingOffers;
         
         /// <summary>
         /// hospitalForSurgery control.
@@ -146,6 +227,69 @@ namespace MedicalTourism {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.PlaceHolder addedSurgery;
+        
+        /// <summary>
+        /// editOfferSurgName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox editOfferSurgName;
+        
+        /// <summary>
+        /// editOfferHospitalID control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox editOfferHospitalID;
+        
+        /// <summary>
+        /// editOfferCost control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox editOfferCost;
+        
+        /// <summary>
+        /// editedOffer control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.PlaceHolder editedOffer;
+        
+        /// <summary>
+        /// deleteOfferSurgName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox deleteOfferSurgName;
+        
+        /// <summary>
+        /// deleteOfferHospitalID control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox deleteOfferHospitalID;
+        
+        /// <summary>
+        /// deletedOffer control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.PlaceHolder deletedOffer;
         
         /// <summary>
         /// adminForm control.
@@ -235,7 +379,7 @@ namespace MedicalTourism {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox adminDeleteAirlineID;
+        protected global::System.Web.UI.WebControls.DropDownList adminDeleteAirlineID;
         
         /// <summary>
         /// adminDeleteAirline control.
@@ -641,15 +785,6 @@ namespace MedicalTourism {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox adminDeleteHotelID;
-        
-        /// <summary>
-        /// adminDeleteHotelCityID control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox adminDeleteHotelCityID;
         
         /// <summary>
         /// adminDeleteHotel control.
